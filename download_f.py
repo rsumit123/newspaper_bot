@@ -15,17 +15,50 @@ from scrapy.http import HtmlResponse
 def get_link(url,date):
     
     response = requests.get(url)
-    
-    response = HtmlResponse(url = url,body=response.text,encoding='utf-8')
-    link = response.xpath('//*[@id="post-810"]/div/p[13]/a/@href').extract()[0]
-    response = requests.get(link)
     with open('ff.html','w') as dp:
         dp.write(response.text)
-    response = HtmlResponse(url = link,body=response.text,encoding='utf-8')
-    f_link = response.xpath('//*[@id="iframe"]/@src').extract()[0]
+    
+    response = HtmlResponse(url = url,body=response.text,encoding='utf-8')
+
+    # re = response.xpath(f'//*[@id="post-810"]/div/p/span/text()').extract()
+    # print(re)
+    # for i in range(1,15):
+    #     try:
+    #         re = response.xpath(f'//*[@id="post-810"]/div/p[{i}]/span/text()').extract()[0]
+    #         print(re)
+    #         print(i)
+    #     except:
+    #         pass
+        
+
+    # link = response.xpath('//*[@id="post-810"]/div/p[13]/a/@href').extract()[0]
+    # text = response.xpath('//*[@id="post-810"]/div/p[13]/text()').extract()[0]
+    link = None
+    for i in range(16,1,-1):
+        try:
+            text = response.xpath(f'//*[@id="post-810"]/div/p[{i}]/span/text()').extract()[0]
+            if date.strip().lower() in text.strip().lower():
+                link = response.xpath(f'//*[@id="post-810"]/div/p[{i}]/span/a/@href').extract()[0]
+                print(link)
+                break
+
+        except Exception as e:
+            print(e)
+
+    if link is not None:
+
+        response = requests.get(link)
+        # with open('ff.html','w') as dp:
+        #     dp.write(response.text)
+        response = HtmlResponse(url = link,body=response.text,encoding='utf-8')
+        f_link = response.xpath('//*[@id="iframe"]/@src').extract()[0]
+        return f_link
+    else:
+        return 0
+        # print(link)
 
     
-    return f_link
+    # return f_link
     
 
 def send_mail(send_from, send_to, subject, message, files=[],
@@ -73,28 +106,29 @@ url = "https://dailyepaper.in/indian-express-epaper/"
 date = datetime.datetime.today().strftime('%d %b %Y')
 tdate = datetime.datetime.today().strftime('%d-%m-%Y')
 ydate = (datetime.datetime.today() - datetime.timedelta(days=1)).strftime('%d-%m-%Y')
-
+# date = "15 Feb 2021"
+# tdate = "15-02-2021"
 url = get_link(url,date)
-# url = "https://pdf.indianexpress.com/pdfupload/icici/ie-delhi-27-01-2021.pdf"
+if url !=0:
 
-# url = url.replace('03_February_2021',date) 
+    print("downloading paper..."+"Newspaper_"+tdate+".pdf")
+    if not os.path.exists("Newspaper_"+tdate+".pdf"):
+        try:
+            os.remove('Newspaper_'+ydate+".pdf")
+            print("Newspaper deleted of date: "+ydate)
+        except:
+            pass
 
-print("downloading paper..."+"Newspaper_"+tdate+".pdf")
-if not os.path.exists("Newspaper_"+tdate+".pdf"):
-    try:
-        os.remove('Newspaper_'+ydate+".pdf")
-        print("Newspaper deleted of date: "+ydate)
-    except:
-        pass
-
-# # gdd.download_file_from_google_drive(file_id='1kbdeFXc25V9RvZaCogH2WFaACiy8oIwg',
-# #                                     dest_path='./'+"Newspaper_"+date+".pdf",
-# #                                     unzip=True)
-r = requests.get(url) 
-with open("Newspaper_"+tdate+".pdf",'wb') as f: 
+ 
+    ############################DOWNLOAD###################################################
+    r = requests.get(url) 
+    with open("Newspaper_"+tdate+".pdf",'wb') as f: 
 
 
-    f.write(r.content) 
-print("sending email..."+" Newspaper_"+tdate+".pdf")
+        f.write(r.content) 
+    print("sending email..."+" Newspaper_"+tdate+".pdf")
+    ################################################################################
 
-send_mail("thecolossus018@gmail.com",["rsumit123@gmail.com","gogetmayank23@gmail.com"],date+" Indian Express","Greetings from Sumit's Bot , Find today's Indian Express paper in attachment",files = ["Newspaper_"+tdate+".pdf"])
+    send_mail("thecolossus018@gmail.com",["rsumit123@gmail.com","rpuja132@gmail.com","gogetmayank23@gmail.com"],date+" Indian Express","Greetings from Sumit's Bot , Find today's Indian Express paper in attachment",files = ["Newspaper_"+tdate+".pdf"])
+else:
+    print("Paper not available yet")
