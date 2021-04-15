@@ -8,7 +8,6 @@ from email.mime.text import MIMEText
 from email.utils import COMMASPACE, formatdate
 from email import encoders
 import os
-import time
 from scrapy.http import HtmlResponse
 # from google_drive_downloader import GoogleDriveDownloader as gdd
 
@@ -16,8 +15,8 @@ from scrapy.http import HtmlResponse
 def get_link(url,date):
     
     response = requests.get(url)
-    # with open('ff.html','w') as dp:
-    #     dp.write(response.text)
+    with open('ff.html','w') as dp:
+        dp.write(response.text)
     
     response = HtmlResponse(url = url,body=response.text,encoding='utf-8')
 
@@ -103,48 +102,33 @@ def send_mail(send_from, send_to, subject, message, files=[],
     smtp.sendmail(send_from, send_to, msg.as_string())
     smtp.quit()
 ##############################Downloading PDF###########################################3
-def download_pdf():
-    print("Checking paper availability..")
-    url = "https://dailyepaper.in/indian-express-epaper/"
-    date = datetime.datetime.today().strftime('%d %b %Y')
-    tdate = datetime.datetime.today().strftime('%d-%m-%Y')
-    ydate = (datetime.datetime.today() - datetime.timedelta(days=1)).strftime('%d-%m-%Y')
-    date = "16 Apr 2021"
-    tdate = "16-04-2021"
-    url = get_link(url,date)
-    if url !=0:
-        print("Paper found , downloading..")
+url = "https://dailyepaper.in/indian-express-epaper/"
+date = datetime.datetime.today().strftime('%d %b %Y')
+tdate = datetime.datetime.today().strftime('%d-%m-%Y')
+ydate = (datetime.datetime.today() - datetime.timedelta(days=1)).strftime('%d-%m-%Y')
+# date = "15 Feb 2021"
+# tdate = "15-02-2021"
+url = get_link(url,date)
+if url !=0:
 
-        print("downloading paper..."+"Newspaper_"+tdate+".pdf")
-        if not os.path.exists("Newspaper_"+tdate+".pdf"):
-            try:
-                os.remove('Newspaper_'+ydate+".pdf")
-                print("Newspaper deleted of date: "+ydate)
-            except:
-                pass
+    print("downloading paper..."+"Newspaper_"+tdate+".pdf")
+    if not os.path.exists("Newspaper_"+tdate+".pdf"):
+        try:
+            os.remove('Newspaper_'+ydate+".pdf")
+            print("Newspaper deleted of date: "+ydate)
+        except:
+            pass
 
-    
-        ############################DOWNLOAD###################################################
-        r = requests.get(url) 
-        with open("Newspaper_"+tdate+".pdf",'wb') as f: 
-
-
-            f.write(r.content) 
-        print("sending email..."+" Newspaper_"+tdate+".pdf")
-        return 1
-        ################################################################################
-
-        # send_mail("thecolossus018@gmail.com",["kumarisuruchi707@gmail.com","rsumit123@gmail.com","rpuja132@gmail.com","gogetmayank23@gmail.com","praachi.nk@gmail.com"],date+" Indian Express","Greetings from Sumit's Bot , Find today's Indian Express paper in attachment",files = ["Newspaper_"+tdate+".pdf"])
-    else:
-        
-        return 0
-
-downloaded = 0
  
-while downloaded == 0:
-    downloaded = download_pdf()
-    print("Paper not available yet, Trying again after 120 secs")
-    time.sleep(150)
-    
+    ############################DOWNLOAD###################################################
+    r = requests.get(url) 
+    with open("Newspaper_"+tdate+".pdf",'wb') as f: 
 
 
+        f.write(r.content) 
+    print("sending email..."+" Newspaper_"+tdate+".pdf")
+    ################################################################################
+
+    send_mail("thecolossus018@gmail.com",["kumarisuruchi707@gmail.com","rsumit123@gmail.com","rpuja132@gmail.com","gogetmayank23@gmail.com","prachi.nk@gmail.com"],date+" Indian Express","Greetings from Sumit's Bot , Find today's Indian Express paper in attachment",files = ["Newspaper_"+tdate+".pdf"])
+else:
+    print("Paper not available yet")
