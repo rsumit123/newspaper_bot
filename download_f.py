@@ -109,8 +109,8 @@ def download_pdf():
     date = datetime.datetime.today().strftime('%d %b %Y')
     tdate = datetime.datetime.today().strftime('%d-%m-%Y')
     ydate = (datetime.datetime.today() - datetime.timedelta(days=1)).strftime('%d-%m-%Y')
-    date = "16 Apr 2021"
-    tdate = "16-04-2021"
+    # date = "16 Apr 2021"
+    # tdate = "16-04-2021"
     url = get_link(url,date)
     if url !=0:
         print("Paper found , downloading..")
