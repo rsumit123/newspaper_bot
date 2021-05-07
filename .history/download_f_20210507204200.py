@@ -198,10 +198,8 @@ def download_pdf():
         
         ################################################################################
 
-        send_mail("thecolossus018@gmail.com",["kumarisuruchi707@gmail.com","rsumit123@gmail.com","rpuja132@gmail.com","gogetmayank23@gmail.com"],date+" Indian Express","Greetings from Sumit's Bot , Find today's Indian Express paper here ==> "+url)
+        send_mail("thecolossus018@gmail.com",["kumarisuruchi707@gmail.com","rsumit123@gmail.com","rpuja132@gmail.com","gogetmayank23@gmail.com"],date+" Indian Express","Greetings from Sumit's Bot , Find today's Indian Express paper here ==>")
         send_mail("thecolossus018@gmail.com",["praachi.nk@gmail.com"],date+" Indian Express","Greetings from Sumit's Bot , Find today's Indian Express paper here ==>  "+url)
-        # send_mail("thecolossus018@gmail.com",["rsumit123@gmail.com"],date+" Indian Express","Greetings from Sumit's Bot , Find today's Indian Express paper here ==>  "+url)
-
         return 1
     else:
         

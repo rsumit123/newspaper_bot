@@ -189,19 +189,17 @@ def download_pdf():
 
     
         ############################DOWNLOAD###################################################
-        # r = requests.get(url) 
-        # with open("Newspaper_"+tdate+".pdf",'wb') as f: 
+        r = requests.get(url) 
+        with open("Newspaper_"+tdate+".pdf",'wb') as f: 
 
 
-        #     f.write(r.content) 
-        # print("sending email..."+" Newspaper_"+tdate+".pdf")
+            f.write(r.content) 
+        print("sending email..."+" Newspaper_"+tdate+".pdf")
         
         ################################################################################
 
-        send_mail("thecolossus018@gmail.com",["kumarisuruchi707@gmail.com","rsumit123@gmail.com","rpuja132@gmail.com","gogetmayank23@gmail.com"],date+" Indian Express","Greetings from Sumit's Bot , Find today's Indian Express paper here ==> "+url)
-        send_mail("thecolossus018@gmail.com",["praachi.nk@gmail.com"],date+" Indian Express","Greetings from Sumit's Bot , Find today's Indian Express paper here ==>  "+url)
-        # send_mail("thecolossus018@gmail.com",["rsumit123@gmail.com"],date+" Indian Express","Greetings from Sumit's Bot , Find today's Indian Express paper here ==>  "+url)
-
+        send_mail("thecolossus018@gmail.com",["kumarisuruchi707@gmail.com","rsumit123@gmail.com","rpuja132@gmail.com","gogetmayank23@gmail.com"],date+" Indian Express","Greetings from Sumit's Bot , Find today's Indian Express paper in attachment",files = ["Newspaper_"+tdate+".pdf"])
+        send_mail("thecolossus018@gmail.com",["praachi.nk@gmail.com"],date+" Indian Express","Greetings from Sumit's Bot , Find today's Indian Express paper in attachment",files = ["Newspaper_"+tdate+".pdf"])
         return 1
     else:
         

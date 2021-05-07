@@ -175,33 +175,31 @@ def download_pdf():
     # date = "16 Apr 2021"
     # tdate = "16-04-2021"
     # url = get_link(url,date)
-    url = get_link(url,date)
+    url = get_link(url,tdate)
     if url !=0:
-        # print("Paper found , downloading..")
+        print("Paper found , downloading..")
 
-        # print("downloading paper..."+"Newspaper_"+tdate+".pdf")
-        # if not os.path.exists("Newspaper_"+tdate+".pdf"):
-        #     try:
-        #         os.remove('Newspaper_'+ydate+".pdf")
-        #         print("Newspaper deleted of date: "+ydate)
-        #     except:
-        #         pass
+        print("downloading paper..."+"Newspaper_"+tdate+".pdf")
+        if not os.path.exists("Newspaper_"+tdate+".pdf"):
+            try:
+                os.remove('Newspaper_'+ydate+".pdf")
+                print("Newspaper deleted of date: "+ydate)
+            except:
+                pass
 
     
         ############################DOWNLOAD###################################################
-        # r = requests.get(url) 
-        # with open("Newspaper_"+tdate+".pdf",'wb') as f: 
+        r = requests.get(url) 
+        with open("Newspaper_"+tdate+".pdf",'wb') as f: 
 
 
-        #     f.write(r.content) 
-        # print("sending email..."+" Newspaper_"+tdate+".pdf")
+            f.write(r.content) 
+        print("sending email..."+" Newspaper_"+tdate+".pdf")
         
         ################################################################################
 
-        send_mail("thecolossus018@gmail.com",["kumarisuruchi707@gmail.com","rsumit123@gmail.com","rpuja132@gmail.com","gogetmayank23@gmail.com"],date+" Indian Express","Greetings from Sumit's Bot , Find today's Indian Express paper here ==> "+url)
-        send_mail("thecolossus018@gmail.com",["praachi.nk@gmail.com"],date+" Indian Express","Greetings from Sumit's Bot , Find today's Indian Express paper here ==>  "+url)
-        # send_mail("thecolossus018@gmail.com",["rsumit123@gmail.com"],date+" Indian Express","Greetings from Sumit's Bot , Find today's Indian Express paper here ==>  "+url)
-
+        send_mail("thecolossus018@gmail.com",["kumarisuruchi707@gmail.com","rsumit123@gmail.com","rpuja132@gmail.com","gogetmayank23@gmail.com"],date+" Indian Express","Greetings from Sumit's Bot , Find today's Indian Express paper in attachment",files = ["Newspaper_"+tdate+".pdf"])
+        send_mail("thecolossus018@gmail.com",["praachi.nk@gmail.com"],date+" Indian Express","Greetings from Sumit's Bot , Find today's Indian Express paper in attachment",files = ["Newspaper_"+tdate+".pdf"])
         return 1
     else:
         
