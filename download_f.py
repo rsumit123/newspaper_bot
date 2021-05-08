@@ -47,13 +47,13 @@ def get_link(url,date):
             print(e)
 
     if link is not None:
-        f_link = link
+        # f_link = link
 
-        # response = requests.get(link)
-        # # with open('ff.html','w') as dp:
-        # #     dp.write(response.text)
-        # response = HtmlResponse(url = link,body=response.text,encoding='utf-8')
-        # f_link = response.xpath('//*[@id="iframe"]/@src').extract()[0]
+        response = requests.get(link)
+        # with open('ff.html','w') as dp:
+        #     dp.write(response.text)
+        response = HtmlResponse(url = link,body=response.text,encoding='utf-8')
+        f_link = response.xpath('//*[@id="iframe"]/@src').extract()[0]
         return f_link
     else:
         return 0
@@ -177,30 +177,30 @@ def download_pdf():
     # url = get_link(url,date)
     url = get_link(url,date)
     if url !=0:
-        # print("Paper found , downloading..")
+        print("Paper found , downloading..")
 
-        # print("downloading paper..."+"Newspaper_"+tdate+".pdf")
-        # if not os.path.exists("Newspaper_"+tdate+".pdf"):
-        #     try:
-        #         os.remove('Newspaper_'+ydate+".pdf")
-        #         print("Newspaper deleted of date: "+ydate)
-        #     except:
-        #         pass
+        print("downloading paper..."+"Newspaper_"+tdate+".pdf")
+        if not os.path.exists("Newspaper_"+tdate+".pdf"):
+            try:
+                os.remove('Newspaper_'+ydate+".pdf")
+                print("Newspaper deleted of date: "+ydate)
+            except:
+                pass
 
     
-        ############################DOWNLOAD###################################################
-        # r = requests.get(url) 
-        # with open("Newspaper_"+tdate+".pdf",'wb') as f: 
+        ###########################DOWNLOAD###################################################
+        r = requests.get(url) 
+        with open("Newspaper_"+tdate+".pdf",'wb') as f: 
 
 
-        #     f.write(r.content) 
-        # print("sending email..."+" Newspaper_"+tdate+".pdf")
+            f.write(r.content) 
+        print("sending email..."+" Newspaper_"+tdate+".pdf")
         
         ################################################################################
 
-        send_mail("thecolossus018@gmail.com",["kumarisuruchi707@gmail.com","rsumit123@gmail.com","rpuja132@gmail.com","gogetmayank23@gmail.com"],date+" Indian Express","Greetings from Sumit's Bot , Find today's Indian Express paper here ==> "+url)
-        send_mail("thecolossus018@gmail.com",["praachi.nk@gmail.com"],date+" Indian Express","Greetings from Sumit's Bot , Find today's Indian Express paper here ==>  "+url)
-        # send_mail("thecolossus018@gmail.com",["rsumit123@gmail.com"],date+" Indian Express","Greetings from Sumit's Bot , Find today's Indian Express paper here ==>  "+url)
+        send_mail("thecolossus018@gmail.com",["kumarisuruchi707@gmail.com","rsumit123@gmail.com","rpuja132@gmail.com","gogetmayank23@gmail.com"],date+" Indian Express","Greetings from Sumit's Bot , Find today's Indian Express paper in attachment",files = ["Newspaper_"+tdate+".pdf"])
+        send_mail("thecolossus018@gmail.com",["praachi.nk@gmail.com"],date+" Indian Express","Greetings from Sumit's Bot , Find today's Indian Express paper in attachment",files = ["Newspaper_"+tdate+".pdf"])
+        # send_mail("thecolossus018@gmail.com",["rsumit123@gmail.com"],date+" Indian Express","Greetings from Sumit's Bot , Find today's Indian Express paper in attachment",files = ["Newspaper_"+tdate+".pdf"])
 
         return 1
     else:
