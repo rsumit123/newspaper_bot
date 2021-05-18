@@ -219,6 +219,9 @@ def download_pdf():
         gdd.download_file_from_google_drive(file_id=f_id_ie,
                                     dest_path="./IE_Newspaper_"+tdate+".pdf"
                                     )
+
+        file_size_ie = os.path.getsize("./IE_Newspaper_"+tdate+".pdf")/1000000
+        # print(file_size_ie/1000000)
         # r = requests.get(url) 
         # with open("IE_Newspaper_"+tdate+".html",'wb') as f: 
 
@@ -231,18 +234,30 @@ def download_pdf():
                                     dest_path="./TH_Newspaper_"+tdate+".pdf"
                                     )
 
+        file_size_th = os.path.getsize("./TH_Newspaper_"+tdate+".pdf")/1000000
+
+        
+
+
+        
+
         # r = requests.get(url_hindu) 
         # with open("TH_Newspaper_"+tdate+".html",'wb') as f: 
 
 
         #     f.write(r.content)
-        # print("sending email..."+"IE_Newspaper_"+tdate+".pdf"+","+"TH_Newspaper_"+tdate+".pdf")
+
+        if file_size_ie >=2 and file_size_th>=2:
+            print("sending email..."+"IE_Newspaper_"+tdate+".pdf"+","+"TH_Newspaper_"+tdate+".pdf")
         
         ################################################################################
 
-        # send_mail("thecolossus018@gmail.com",["kumarisuruchi707@gmail.com","rsumit123@gmail.com","rpuja132@gmail.com","gogetmayank23@gmail.com","praachi.nk@gmail.com"],date+" Indian Express and The Hindu","Greetings from Sumit's Bot , Find today's Indian Express and The Hindu paper in attachment",files = ["IE_Newspaper_"+tdate+".pdf","TH_Newspaper_"+tdate+".pdf"])
+            # send_mail("thecolossus018@gmail.com",["kumarisuruchi707@gmail.com","rsumit123@gmail.com","rpuja132@gmail.com","gogetmayank23@gmail.com","praachi.nk@gmail.com"],date+" Indian Express and The Hindu","Greetings from Sumit's Bot , Find today's Indian Express and The Hindu paper in attachment",files = ["IE_Newspaper_"+tdate+".pdf","TH_Newspaper_"+tdate+".pdf"])
         # send_mail("thecolossus018@gmail.com",["praachi.nk@gmail.com"],date+" Indian Express and The Hindu","Greetings from Sumit's Bot , Find today's Indian Express and The Hindu paper in attachment",files = ["IE_Newspaper_"+tdate+".pdf","TH_Newspaper_"+tdate+".pdf"])
         # send_mail("thecolossus018@gmail.com",["rsumit123@gmail.com"],date+" Indian Express and The Hindu","Greetings from Sumit's Bot , Find today's Indian Express paper in attachment",files = ["IE_Newspaper_"+tdate+".pdf","TH_Newspaper_"+tdate+".pdf"])
+        else:
+            print("File size error... ")
+            return 0
 
         return 1
     else:
