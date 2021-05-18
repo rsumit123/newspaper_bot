@@ -17,9 +17,10 @@ def get_link():
         'cookie': 'PHPSESSID=d970c547db1be950aee16c9af6199ef4; _ga=GA1.2.706512715.1612284912; _gid=GA1.2.1930882388.1612284912; __gads=ID=06c316b8dde33f3c-2233b2cfe8c5006a:T=1612284911:RT=1612284911:S=ALNI_Mb7vUOJGddWGzIqz7RtHbocZAdGMw',
     }
     url = "https://iasbano.com/indian-express-upsc.php"
-    response = requests.get(url,headers=headers)
+    response = requests.get(url,headers=headers,verify=False)
     response = HtmlResponse(url = url,body=response.text,encoding='utf-8')
-    link = response.xpath("/html/body/div[2]/div[2]/div/table/tbody/tr[1]/td[2]/a/@href").extract()[0]
+    # /html/body/div[2]/div[2]/div/table/tbody/tr[1]/td[2]/a
+    link = response.xpath("/html/body/div[2]/div[2]/div/table/tbody/tr[1]/td[2]/a/@href").extract()
     return link
 # with open('iasbano.html','w') as fp:
 #     fp.write(response.text)
