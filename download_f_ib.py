@@ -38,8 +38,8 @@ def get_link(url,date):
             return 0
 
 
-    # with open('ff_ie.html','w') as dp:
-    #     dp.write(response.text)
+    with open('ff_ie.html','w') as dp:
+        dp.write(response.text)
     
     response = HtmlResponse(url = url,body=response.text,encoding='utf-8')
 
@@ -57,18 +57,22 @@ def get_link(url,date):
     # link = response.xpath('//*[@id="post-810"]/div/p[13]/a/@href').extract()[0]
     # text = response.xpath('//*[@id="post-810"]/div/p[13]/text()').extract()[0]
     link = None
-    for i in range(16,0,-1):
+    for i in range(1,0,-1):
         try:
             # "/html/body/div[2]/div[2]/div/table/tbody/tr[1]/td[2]/a/@href"
             text = response.xpath(f'/html/body/div[2]/div[2]/div/table/tbody/tr[{i}]/td[1]/text()').extract()[0]
-            # print("TEXT ===",text)
-            # print("DATE ===",date)
-            if date.strip().lower() in text.strip().lower():
+            # print("TEXT ===",text.strip().replace(',','').lower())
+            # print("DATE ===",date.strip().lower())
+            # print(date.strip().replace(',','').lower()==text.strip().replace(',','').lower())
+            if date.strip().replace(',','').lower() == text.strip().replace(',','').lower():
+                # print("Matched")
                 link = response.xpath(f'/html/body/div[2]/div[2]/div/table/tbody/tr[{i}]/td[2]/a/@href').extract()[0]
                 print(link)
                 break
+            # print("Not matched")
 
         except Exception as e:
+            print("from here")
             print(e)
 
     if link is not None:
@@ -190,10 +194,10 @@ def download_pdf():
     print("Checking paper availability..")
     url = "https://iasbano.com/indian-express-upsc.php#download_the_hindu"
     url_hindu = "https://iasbano.com/the-hindu-pdf-download-1.php#download_the_hindu"
-    date = datetime.datetime.today().strftime('%d %b, %Y')
+    date = datetime.datetime.today().strftime('%-d %b, %Y')
     tdate = datetime.datetime.today().strftime('%d-%m-%Y')
     ydate = (datetime.datetime.today() - datetime.timedelta(days=1)).strftime('%d-%m-%Y')
-    # date = "09 May 2021"
+    # date = "1 June 2021"
     # tdate = "09-05-2021"
     # url = get_link(url,date)
     url = get_link(url,date)
