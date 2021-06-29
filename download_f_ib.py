@@ -38,38 +38,23 @@ def get_link(url,date):
             return 0
 
 
-    # with open('ff_ie.html','w') as dp:
-    #     dp.write(response.text)
+ 
     
     response = HtmlResponse(url = url,body=response.text,encoding='utf-8')
 
-    # re = response.xpath(f'//*[@id="post-810"]/div/p/span/text()').extract()
-    # print(re)
-    # for i in range(1,15):
-    #     try:
-    #         re = response.xpath(f'//*[@id="post-810"]/div/p[{i}]/span/text()').extract()[0]
-    #         print(re)
-    #         print(i)
-    #     except:
-    #         pass
-        
-
-    # link = response.xpath('//*[@id="post-810"]/div/p[13]/a/@href').extract()[0]
-    # text = response.xpath('//*[@id="post-810"]/div/p[13]/text()').extract()[0]
+    
     link = None
     for i in range(1,0,-1):
         try:
-            # "/html/body/div[2]/div[2]/div/table/tbody/tr[1]/td[2]/a/@href"
+           
             text = response.xpath(f'/html/body/div[2]/div[2]/div/table/tbody/tr[{i}]/td[1]/text()').extract()[0]
-            # print("TEXT ===",text.strip().replace(',','').lower())
-            # print("DATE ===",date.strip().replace(',','').lower().replace('jun','june'))
-            # # print(date.strip().replace(',','').lower()==text.strip().replace(',','').lower())
+            
             if date.strip().replace(',','').lower().replace('jun','june') == text.strip().replace(',','').lower():
-                # print("Matched")
+               
                 link = response.xpath(f'/html/body/div[2]/div[2]/div/table/tbody/tr[{i}]/td[2]/a/@href').extract()[0]
                 print(link)
                 break
-            # print("Not matched")
+           
 
         except Exception as e:
             print("from here")
@@ -78,19 +63,11 @@ def get_link(url,date):
     if link is not None:
         f_link = link
 
-        # response = requests.get(link)
-        # # with open('ff.html','w') as dp:
-        # #     dp.write(response.text)
-        # response = HtmlResponse(url = link,body=response.text,encoding='utf-8')
-        # f_link = response.xpath('//*[@id="iframe"]/@src').extract()[0]
+        
         return f_link
     else:
         return 0
-        # print(link)
-
-    
-    # return f_link
-######################################################################################
+        
 def get_link_hindu(url,date):
     
     try:
@@ -102,24 +79,11 @@ def get_link_hindu(url,date):
         except Exception as e:
             print(e)
             return 0
-    # with open('ff_hindu.html','w') as dp:
-    #     dp.write(response.text)
+    
     
     response = HtmlResponse(url = url,body=response.text,encoding='utf-8')
 
-    # re = response.xpath(f'//*[@id="post-810"]/div/p/span/text()').extract()
-    # print(re)
-    # for i in range(1,15):
-    #     try:
-    #         re = response.xpath(f'//*[@id="post-810"]/div/p[{i}]/span/text()').extract()[0]
-    #         print(re)
-    #         print(i)
-    #     except:
-    #         pass
-        
-
-    # link = response.xpath('//*[@id="post-810"]/div/p[13]/a/@href').extract()[0]
-    # text = response.xpath('//*[@id="post-810"]/div/p[13]/text()').extract()[0]
+    
     link = None
     for i in range(16,0,-1):
         try:
@@ -135,11 +99,7 @@ def get_link_hindu(url,date):
     if link is not None:
         f_link = link
 
-        # response = requests.get(link)
-        # # with open('ff.html','w') as dp:
-        # #     dp.write(response.text)
-        # response = HtmlResponse(url = link,body=response.text,encoding='utf-8')
-        # f_link = response.xpath('//*[@id="iframe"]/@src').extract()[0]
+        
         return f_link
     else:
         return 0
@@ -225,12 +185,7 @@ def download_pdf():
                                     )
 
         file_size_ie = os.path.getsize("./IE_Newspaper_"+tdate+".pdf")/1000000
-        # print(file_size_ie/1000000)
-        # r = requests.get(url) 
-        # with open("IE_Newspaper_"+tdate+".html",'wb') as f: 
-
-
-        #     f.write(r.content) '
+        
 
         f_id_th = url_hindu.split("file/d/")[1].split("/view")[0]
         print("FILE ID HINDU ",f_id_th)
@@ -245,12 +200,7 @@ def download_pdf():
 
         
 
-        # r = requests.get(url_hindu) 
-        # with open("TH_Newspaper_"+tdate+".html",'wb') as f: 
-
-
-        #     f.write(r.content)
-
+        
         if file_size_ie >=2 and file_size_th>=2:
             print("sending email..."+"IE_Newspaper_"+tdate+".pdf"+","+"TH_Newspaper_"+tdate+".pdf")
         
@@ -267,8 +217,7 @@ def download_pdf():
                 send_mail("thecolossus018@gmail.com",["kumarisuruchi707@gmail.com","rpuja132@gmail.com","rsumit123@gmail.com","gogetmayank23@gmail.com","praachi.nk@gmail.com"],date+" Indian Express and The Hindu","Greetings from Sumit's Bot , Find today's Indian Express and The Hindu paper in attachment. PDF of The Hindu exceeded gmail's size limit for attachments. Please view The Hindu paper from the following link => "+url_hindu,files = ["IE_Newspaper_"+tdate+".pdf"])
 
         
-        # send_mail("thecolossus018@gmail.com",["praachi.nk@gmail.com"],date+" Indian Express and The Hindu","Greetings from Sumit's Bot , Find today's Indian Express and The Hindu paper in attachment",files = ["IE_Newspaper_"+tdate+".pdf","TH_Newspaper_"+tdate+".pdf"])
-        # send_mail("thecolossus018@gmail.com",["rsumit123@gmail.com"],date+" Indian Express and The Hindu","Greetings from Sumit's Bot , Find today's Indian Express paper in attachment",files = ["IE_Newspaper_"+tdate+".pdf","TH_Newspaper_"+tdate+".pdf"])
+        
         else:
             print("File size error... ")
             return 0
