@@ -49,7 +49,7 @@ def get_link(url,date):
            
             text = response.xpath(f'/html/body/div[2]/div[2]/div/table/tbody/tr[{i}]/td[1]/text()').extract()[0]
             
-            if date.strip().replace(',','').lower().replace('jun','june') == text.strip().replace(',','').lower():
+            if date.strip().replace(',','').lower().replace('jun','june').replace('jul','july') == text.strip().replace(',','').lower():
                
                 link = response.xpath(f'/html/body/div[2]/div[2]/div/table/tbody/tr[{i}]/td[2]/a/@href').extract()[0]
                 print(link)
@@ -88,7 +88,7 @@ def get_link_hindu(url,date):
     for i in range(16,0,-1):
         try:
             text = response.xpath(f'/html/body/div[2]/div[2]/div/table/tbody/tr[{i}]/td[1]/text()').extract()[0]
-            if date.strip().replace(',','').lower().replace('jun','june') == text.strip().replace(',','').lower():
+            if date.strip().replace(',','').lower().replace('jun','june').replace('jul','july') == text.strip().replace(',','').lower():
                 link = response.xpath(f'/html/body/div[2]/div[2]/div/table/tbody/tr[{i}]/td[2]/a/@href').extract()[0]
                 print(link)
                 break
@@ -160,6 +160,8 @@ def download_pdf():
     # date = "1 June 2021"
     # tdate = "09-05-2021"
     # url = get_link(url,date)
+
+    print("date",date)
     url = get_link(url,date)
     url_hindu = get_link_hindu(url_hindu,date)
     print("IE == ",url)
