@@ -65,8 +65,8 @@ def get_link(url,date):
 def get_link_hindu(url,date):
     
     response = requests.get(url)
-    # with open('ff_hindu.html','w') as dp:
-    #     dp.write(response.text)
+    with open('ff_hindu.html','w') as dp:
+        dp.write(response.text)
     
     response = HtmlResponse(url = url,body=response.text,encoding='utf-8')
 
@@ -84,11 +84,18 @@ def get_link_hindu(url,date):
     # link = response.xpath('//*[@id="post-810"]/div/p[13]/a/@href').extract()[0]
     # text = response.xpath('//*[@id="post-810"]/div/p[13]/text()').extract()[0]
     link = None
-    for i in range(16,1,-1):
+    for i in range(5,1,-1):
         try:
-            text = response.xpath(f'//*[@id="post-17698"]/div/p[{i}]/text()').extract()[0]
+            text = response.xpath(f'//*[@class="entry-content mh-clearfix"]/p[@style="text-align: center;"][{i}]/span[1]/text()').extract()[0]
+
+            print("========> ",i)
+            # text1 = response.xpath(f'//*[@class="entry-content mh-clearfix"]/p[@style="text-align: center;"][{i}]/span[1]/a/@href').extract()[0]
+            # # text = response.xpath(f'//*[@id="post-26985"]/div/p[{i}]/text()').extract()[0]
+            # print("text line 90 ",text)
+            # print("==================================")
+            # print("text line 89", text1)
             if date.strip().lower() in text.strip().lower():
-                link = response.xpath(f'//*[@id="post-17698"]/div/p[{i}]/a/@href').extract()[0]
+                link = response.xpath(f'//*[@class="entry-content mh-clearfix"]/p[@style="text-align: center;"][{i}]/span[1]/a/@href').extract()[0]
                 print(link)
                 break
 
@@ -96,7 +103,7 @@ def get_link_hindu(url,date):
             print(e)
 
     if link is not None:
-        # f_link = link
+        f_link = link
 
         response = requests.get(link)
         # with open('ff.html','w') as dp:
@@ -155,15 +162,24 @@ def send_mail(send_from, send_to, subject, message, files=[],
 ##############################Downloading PDF###########################################3
 def download_pdf():
     print("Checking paper availability..")
-    url = "https://dailyepaper.in/indian-express-epaper/"
-    url_hindu = "https://dailyepaper.in/the-hindu-pdf-epaper-downloa-now/"
+    url = "https://edumo.in/wp-content/uploads/2021/09/the-Indian-Express-pdf-06-September-2021.pdf"
+    url_alt = "https://edumo.in/wp-content/uploads/2021/09/the-Indian-Express-newspaper-pdf-07-September-2021.pdf"
+
+    url_hindu = "https://dailyepaper.in/the-hindu-pdf-epaper-07-sep-2021/"
     date = datetime.datetime.today().strftime('%d %b %Y')
     tdate = datetime.datetime.today().strftime('%d-%m-%Y')
     ydate = (datetime.datetime.today() - datetime.timedelta(days=1)).strftime('%d-%m-%Y')
+    fullDate = datetime.datetime.today().strftime('%d-%B-%Y')
     # date = "09 May 2021"
     # tdate = "09-05-2021"
+    print(date)
+    print(tdate)
     # url = get_link(url,date)
-    url = get_link(url,date)
+    # url = get_link(url,date)
+    url = url.replace("06-September-2021",fullDate)
+    url_hindu = url_hindu.replace("07-sep-2021",date.replace('S',"s").replace(' ','-'))
+    print("url urlhindu", url, url_hindu)
+
     url_hindu = get_link_hindu(url_hindu,date)
     print("IE == ",url)
     print("TH == ",url_hindu)
@@ -192,11 +208,54 @@ def download_pdf():
 
 
             f.write(r.content)
-        print("sending email..."+"IE_Newspaper_"+tdate+".pdf"+","+"TH_Newspaper_"+tdate+".pdf")
+
+        file_size_ie = os.path.getsize("./IE_Newspaper_"+tdate+".pdf")/1000000
+
+        if file_size_ie < 1.5:
+            print("Trying again for IE")
+            url = url_alt.replace("07-September-2021",fullDate)
+            r = requests.get(url) 
+            with open("IE_Newspaper_"+tdate+".pdf",'wb') as f: 
+
+
+                f.write(r.content)
+            file_size_ie = os.path.getsize("./IE_Newspaper_"+tdate+".pdf")/1000000
+
+
+
+
+        file_size_th = os.path.getsize("./TH_Newspaper_"+tdate+".pdf")/1000000
+
+        print(file_size_ie,file_size_th)
+
+        
+
+
+        
+
+        
+        if file_size_ie >=2 and file_size_th>=2 and (file_size_ie+file_size_th<=25):
+            print("sending email..."+"IE_Newspaper_"+tdate+".pdf"+","+"TH_Newspaper_"+tdate+".pdf")
+            send_mail("thecolossus018@gmail.com",["kumarisuruchi707@gmail.com","rpuja132@gmail.com","rsumit123@gmail.com","gogetmayank23@gmail.com","praachi.nk@gmail.com"],date+" Indian Express and The Hindu","Greetings from Sumit's Bot , Find today's Indian Express and The Hindu paper in attachment",files = ["IE_Newspaper_"+tdate+".pdf","TH_Newspaper_"+tdate+".pdf"])
+
+        elif file_size_ie >=2 and file_size_th<=2:
+        
+            print("sending email..."+"IE_Newspaper_"+tdate+".pdf"+","+"TH_Newspaper_"+tdate+".pdf")
+            send_mail("thecolossus018@gmail.com",["kumarisuruchi707@gmail.com","rpuja132@gmail.com","rsumit123@gmail.com","gogetmayank23@gmail.com","praachi.nk@gmail.com"],date+" Indian Express and The Hindu",f"Greetings from Sumit's Bot , Find today's Indian Express and The Hindu paper in attachment. Some error in uploading The Hindu attachment. Please view The Hindu from the following link => {url_hindu}",files = ["IE_Newspaper_"+tdate+".pdf","TH_Newspaper_"+tdate+".pdf"])
+        elif file_size_ie + file_size_th>=25:
+        
+            print("sending email..."+"IE_Newspaper_"+tdate+".pdf"+","+"TH_Newspaper_"+tdate+".pdf")
+            send_mail("thecolossus018@gmail.com",["kumarisuruchi707@gmail.com","rpuja132@gmail.com","rsumit123@gmail.com","gogetmayank23@gmail.com","praachi.nk@gmail.com"],date+" Indian Express and The Hindu",f"Greetings from Sumit's Bot , Find today's Indian Express and The Hindu paper in attachment. PDF of The Hindu exceeded gmail's size limit for attachments. Please view The Hindu from the following link => {url_hindu}",files = ["IE_Newspaper_"+tdate+".pdf","TH_Newspaper_"+tdate+".pdf"])
+
+        else:
+            print("File size error")
+
+
+
+
         
         ################################################################################
 
-        send_mail("thecolossus018@gmail.com",["kumarisuruchi707@gmail.com","rsumit123@gmail.com","rpuja132@gmail.com","gogetmayank23@gmail.com","praachi.nk@gmail.com"],date+" Indian Express and The Hindu","Greetings from Sumit's Bot , Find today's Indian Express and The Hindu paper in attachment",files = ["IE_Newspaper_"+tdate+".pdf","TH_Newspaper_"+tdate+".pdf"])
         # send_mail("thecolossus018@gmail.com",["praachi.nk@gmail.com"],date+" Indian Express and The Hindu","Greetings from Sumit's Bot , Find today's Indian Express and The Hindu paper in attachment",files = ["IE_Newspaper_"+tdate+".pdf","TH_Newspaper_"+tdate+".pdf"])
         # send_mail("thecolossus018@gmail.com",["rsumit123@gmail.com"],date+" Indian Express and The Hindu","Greetings from Sumit's Bot , Find today's Indian Express paper in attachment",files = ["IE_Newspaper_"+tdate+".pdf","TH_Newspaper_"+tdate+".pdf"])
 
