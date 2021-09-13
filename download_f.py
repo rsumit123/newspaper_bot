@@ -249,24 +249,24 @@ def download_pdf():
         
 
         
-        # if file_size_ie >=2 and file_size_th>=2 and (file_size_ie+file_size_th<=25):
+        if file_size_ie >=2 and file_size_th>=2 and (file_size_ie+file_size_th<=25):
 
-        #     print("sending from first all satisfied")
-        #     print("sending email..."+"IE_Newspaper_"+tdate+".pdf"+","+"TH_Newspaper_"+tdate+".pdf")
-        #     send_mail("thecolossus018@gmail.com",["kumarisuruchi707@gmail.com","rpuja132@gmail.com","rsumit123@gmail.com","gogetmayank23@gmail.com","praachi.nk@gmail.com"],date+" Indian Express and The Hindu","Greetings from Sumit's Bot , Find today's Indian Express and The Hindu paper in attachment",files = ["IE_Newspaper_"+tdate+".pdf","TH_Newspaper_"+tdate+".pdf"])
+            print("sending from first all satisfied")
+            print("sending email..."+"IE_Newspaper_"+tdate+".pdf"+","+"TH_Newspaper_"+tdate+".pdf")
+            send_mail("thecolossus018@gmail.com",["kumarisuruchi707@gmail.com","rpuja132@gmail.com","rsumit123@gmail.com","gogetmayank23@gmail.com","praachi.nk@gmail.com"],date+" Indian Express and The Hindu","Greetings from Sumit's Bot , Find today's Indian Express and The Hindu paper in attachment",files = ["IE_Newspaper_"+tdate+".pdf","TH_Newspaper_"+tdate+".pdf"])
 
-        # elif file_size_ie >=2 and file_size_th<=2:
-        #     print("sending from 2nd th not satisfied")
+        elif file_size_ie >=2 and file_size_th<=2:
+            print("sending from 2nd th not satisfied")
         
-        #     print("sending email..."+"IE_Newspaper_"+tdate+".pdf"+","+"TH_Newspaper_"+tdate+".pdf")
-        #     send_mail("thecolossus018@gmail.com",["kumarisuruchi707@gmail.com","rpuja132@gmail.com","rsumit123@gmail.com","gogetmayank23@gmail.com","praachi.nk@gmail.com"],date+" Indian Express and The Hindu",f"Greetings from Sumit's Bot , Find today's Indian Express and The Hindu paper in attachment. Some error in uploading The Hindu attachment. Please view The Hindu from the following link => {url_hindu}",files = ["IE_Newspaper_"+tdate+".pdf","TH_Newspaper_"+tdate+".pdf"])
-        # elif file_size_ie + file_size_th>=25:
-        #     print("Sending from 3rd size less 25")
-        #     print("sending email..."+"IE_Newspaper_"+tdate+".pdf")
-        #     send_mail("thecolossus018@gmail.com",["kumarisuruchi707@gmail.com","rpuja132@gmail.com","rsumit123@gmail.com","gogetmayank23@gmail.com","praachi.nk@gmail.com"],date+" Indian Express and The Hindu",f"Greetings from Sumit's Bot , Find today's Indian Express and The Hindu paper in attachment. PDF of The Hindu exceeded gmail's size limit for attachments. Please view The Hindu from the following link => {url_hindu}",files = ["IE_Newspaper_"+tdate+".pdf"])
+            print("sending email..."+"IE_Newspaper_"+tdate+".pdf"+","+"TH_Newspaper_"+tdate+".pdf")
+            send_mail("thecolossus018@gmail.com",["kumarisuruchi707@gmail.com","rpuja132@gmail.com","rsumit123@gmail.com","gogetmayank23@gmail.com","praachi.nk@gmail.com"],date+" Indian Express and The Hindu",f"Greetings from Sumit's Bot , Find today's Indian Express and The Hindu paper in attachment. Some error in uploading The Hindu attachment. Please view The Hindu from the following link => {url_hindu}",files = ["IE_Newspaper_"+tdate+".pdf","TH_Newspaper_"+tdate+".pdf"])
+        elif file_size_ie + file_size_th>=25:
+            print("Sending from 3rd size less 25")
+            print("sending email..."+"IE_Newspaper_"+tdate+".pdf")
+            send_mail("thecolossus018@gmail.com",["kumarisuruchi707@gmail.com","rpuja132@gmail.com","rsumit123@gmail.com","gogetmayank23@gmail.com","praachi.nk@gmail.com"],date+" Indian Express and The Hindu",f"Greetings from Sumit's Bot , Find today's Indian Express and The Hindu paper in attachment. PDF of The Hindu exceeded gmail's size limit for attachments. Please view The Hindu from the following link => {url_hindu}",files = ["IE_Newspaper_"+tdate+".pdf"])
 
-        # else:
-        #     print("File size error")
+        else:
+            print("File size error")
 
 
 
