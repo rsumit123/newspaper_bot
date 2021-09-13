@@ -162,8 +162,11 @@ def send_mail(send_from, send_to, subject, message, files=[],
 ##############################Downloading PDF###########################################3
 def download_pdf():
     print("Checking paper availability..")
+    
     url = "https://edumo.in/wp-content/uploads/2021/09/the-Indian-Express-pdf-06-September-2021.pdf"
     url_alt = "https://edumo.in/wp-content/uploads/2021/09/the-Indian-Express-newspaper-pdf-07-September-2021.pdf"
+    url_alt1 = "https://edumo.in/wp-content/uploads/2021/09/Indian-Express-13-September-.pdf"
+    ie_possible_urls = [url,url_alt,url_alt1]
 
     url_hindu = "https://dailyepaper.in/the-hindu-pdf-epaper-07-sep-2021/"
     date = datetime.datetime.today().strftime('%d %b %Y')
@@ -210,16 +213,28 @@ def download_pdf():
             f.write(r.content)
 
         file_size_ie = os.path.getsize("./IE_Newspaper_"+tdate+".pdf")/1000000
+        count = 0
 
-        if file_size_ie < 1.5:
-            print("Trying again for IE")
-            url = url_alt.replace("07-September-2021",fullDate)
-            r = requests.get(url) 
-            with open("IE_Newspaper_"+tdate+".pdf",'wb') as f: 
+        # while file_size_ie < 1.5:
+        if file_size_ie <1.5:
+            for url_ie in ie_possible_urls[1:]:
+
+                print("Trying again for IE with ",url_ie)
+                if "07-September-2021" in url_ie:
+                    url = url_ie.replace("07-September-2021",fullDate)
+                elif "13-September-" in url_ie:
+                    url = url_ie.replace("13-September-",fullDate).replace("-2021","-")
+                else:
+                    pass
+
+                r = requests.get(url) 
+                with open("IE_Newspaper_"+tdate+".pdf",'wb') as f: 
 
 
-                f.write(r.content)
-            file_size_ie = os.path.getsize("./IE_Newspaper_"+tdate+".pdf")/1000000
+                    f.write(r.content)
+                file_size_ie = os.path.getsize("./IE_Newspaper_"+tdate+".pdf")/1000000
+                if file_size_ie > 1.5:
+                    break
 
 
 
@@ -234,24 +249,24 @@ def download_pdf():
         
 
         
-        if file_size_ie >=2 and file_size_th>=2 and (file_size_ie+file_size_th<=25):
+        # if file_size_ie >=2 and file_size_th>=2 and (file_size_ie+file_size_th<=25):
 
-            print("sending from first all satisfied")
-            print("sending email..."+"IE_Newspaper_"+tdate+".pdf"+","+"TH_Newspaper_"+tdate+".pdf")
-            send_mail("thecolossus018@gmail.com",["kumarisuruchi707@gmail.com","rpuja132@gmail.com","rsumit123@gmail.com","gogetmayank23@gmail.com","praachi.nk@gmail.com"],date+" Indian Express and The Hindu","Greetings from Sumit's Bot , Find today's Indian Express and The Hindu paper in attachment",files = ["IE_Newspaper_"+tdate+".pdf","TH_Newspaper_"+tdate+".pdf"])
+        #     print("sending from first all satisfied")
+        #     print("sending email..."+"IE_Newspaper_"+tdate+".pdf"+","+"TH_Newspaper_"+tdate+".pdf")
+        #     send_mail("thecolossus018@gmail.com",["kumarisuruchi707@gmail.com","rpuja132@gmail.com","rsumit123@gmail.com","gogetmayank23@gmail.com","praachi.nk@gmail.com"],date+" Indian Express and The Hindu","Greetings from Sumit's Bot , Find today's Indian Express and The Hindu paper in attachment",files = ["IE_Newspaper_"+tdate+".pdf","TH_Newspaper_"+tdate+".pdf"])
 
-        elif file_size_ie >=2 and file_size_th<=2:
-            print("sending from 2nd th not satisfied")
+        # elif file_size_ie >=2 and file_size_th<=2:
+        #     print("sending from 2nd th not satisfied")
         
-            print("sending email..."+"IE_Newspaper_"+tdate+".pdf"+","+"TH_Newspaper_"+tdate+".pdf")
-            send_mail("thecolossus018@gmail.com",["kumarisuruchi707@gmail.com","rpuja132@gmail.com","rsumit123@gmail.com","gogetmayank23@gmail.com","praachi.nk@gmail.com"],date+" Indian Express and The Hindu",f"Greetings from Sumit's Bot , Find today's Indian Express and The Hindu paper in attachment. Some error in uploading The Hindu attachment. Please view The Hindu from the following link => {url_hindu}",files = ["IE_Newspaper_"+tdate+".pdf","TH_Newspaper_"+tdate+".pdf"])
-        elif file_size_ie + file_size_th>=25:
-            print("Sending from 3rd size less 25")
-            print("sending email..."+"IE_Newspaper_"+tdate+".pdf")
-            send_mail("thecolossus018@gmail.com",["kumarisuruchi707@gmail.com","rpuja132@gmail.com","rsumit123@gmail.com","gogetmayank23@gmail.com","praachi.nk@gmail.com"],date+" Indian Express and The Hindu",f"Greetings from Sumit's Bot , Find today's Indian Express and The Hindu paper in attachment. PDF of The Hindu exceeded gmail's size limit for attachments. Please view The Hindu from the following link => {url_hindu}",files = ["IE_Newspaper_"+tdate+".pdf"])
+        #     print("sending email..."+"IE_Newspaper_"+tdate+".pdf"+","+"TH_Newspaper_"+tdate+".pdf")
+        #     send_mail("thecolossus018@gmail.com",["kumarisuruchi707@gmail.com","rpuja132@gmail.com","rsumit123@gmail.com","gogetmayank23@gmail.com","praachi.nk@gmail.com"],date+" Indian Express and The Hindu",f"Greetings from Sumit's Bot , Find today's Indian Express and The Hindu paper in attachment. Some error in uploading The Hindu attachment. Please view The Hindu from the following link => {url_hindu}",files = ["IE_Newspaper_"+tdate+".pdf","TH_Newspaper_"+tdate+".pdf"])
+        # elif file_size_ie + file_size_th>=25:
+        #     print("Sending from 3rd size less 25")
+        #     print("sending email..."+"IE_Newspaper_"+tdate+".pdf")
+        #     send_mail("thecolossus018@gmail.com",["kumarisuruchi707@gmail.com","rpuja132@gmail.com","rsumit123@gmail.com","gogetmayank23@gmail.com","praachi.nk@gmail.com"],date+" Indian Express and The Hindu",f"Greetings from Sumit's Bot , Find today's Indian Express and The Hindu paper in attachment. PDF of The Hindu exceeded gmail's size limit for attachments. Please view The Hindu from the following link => {url_hindu}",files = ["IE_Newspaper_"+tdate+".pdf"])
 
-        else:
-            print("File size error")
+        # else:
+        #     print("File size error")
 
 
 
