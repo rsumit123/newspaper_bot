@@ -210,7 +210,7 @@ def download_pdf():
                     print("sending from 2nd th not satisfied")
                     link = input("Combined file sizes became more than 25 . Please enter the GDrive link for The Hindu ?")
                     confirm = input("Are you sure, you want to continue with this link ? (y or n)")
-                    if confirm.lower("y"):
+                    if confirm.lower()=="y":
                 
                         print("sending email..."+"IE_Newspaper_"+tdate+".pdf"+","+"TH_Newspaper_"+tdate+".pdf")
                         send_mail("thecolossus018@gmail.com",["kumarisuruchi707@gmail.com","rpuja132@gmail.com","rsumit123@gmail.com","gogetmayank23@gmail.com","praachi.nk@gmail.com"],date+" Indian Express and The Hindu",f"Greetings from Sumit's Bot , Find today's Indian Express and The Hindu paper in attachment. Some error in uploading The Hindu attachment. Please view The Hindu from the following link => {link}",files = ["IE_Newspaper_"+tdate+".pdf","TH_Newspaper_"+tdate+".pdf"])
@@ -220,7 +220,7 @@ def download_pdf():
                 elif file_size_ie + file_size_th>=25:
                     link = input("Combined file sizes became more than 25 . Please enter the GDrive link for The Hindu ?")
                     confirm = input("Are you sure, you want to continue with this link ? (y or n)")
-                    if confirm.lower("y"):
+                    if confirm.lower()=="y":
 
                         print("Sending from 3rd size less 25")
                         print("sending email..."+"IE_Newspaper_"+tdate+".pdf")
