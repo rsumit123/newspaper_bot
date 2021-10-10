@@ -65,8 +65,8 @@ def get_link(url,date):
 def get_link_hindu(url,date):
     
     response = requests.get(url)
-    with open('ff_hindu.html','w') as dp:
-        dp.write(response.text)
+    # with open('ff_hindu.html','w') as dp:
+    #     dp.write(response.text)
     
     response = HtmlResponse(url = url,body=response.text,encoding='utf-8')
 
@@ -159,16 +159,39 @@ def send_mail(send_from, send_to, subject, message, files=[],
     smtp.login(username, password)
     smtp.sendmail(send_from, send_to, msg.as_string())
     smtp.quit()
+
+
+########################################
+
+
 ##############################Downloading PDF###########################################3
+def generate_scraping_link(link):
+
+    
+    resp = requests.get(link)
+    # with open('scraping.html','w') as dp:
+    #     dp.write(resp.text)
+
+    response = HtmlResponse(url = link,body=resp.text,encoding='utf-8')
+
+    re = response.xpath(f'//*[@class="mh-tab-content mh-tab-posts"]/ul/li/a/@href').extract()[0]
+
+    return re
+
+
+
 def download_pdf():
     print("Checking paper availability..")
     
     url = "https://edumo.in/wp-content/uploads/2021/09/the-Indian-Express-pdf-06-September-2021.pdf"
     url_alt = "https://edumo.in/wp-content/uploads/2021/09/the-Indian-Express-newspaper-pdf-07-September-2021.pdf"
     url_alt1 = "https://edumo.in/wp-content/uploads/2021/09/Indian-Express-13-September-.pdf"
-    ie_possible_urls = [url,url_alt,url_alt1]
+    url_alt2 = "https://edumo.in/wp-content/uploads/2021/10/the-Indian-Express-newspaper-pdf-10-october-2021.pdf"
+    ie_possible_urls = [url,url_alt,url_alt1,url_alt2]
 
-    url_hindu = "https://dailyepaper.in/the-hindu-pdf-epaper-07-sep-2021/"
+    url_hindu = "https://dailyepaper.in/"
+    url_hindu = generate_scraping_link(url_hindu)
+
     date = datetime.datetime.today().strftime('%d %b %Y')
     tdate = datetime.datetime.today().strftime('%d-%m-%Y')
     ydate = (datetime.datetime.today() - datetime.timedelta(days=1)).strftime('%d-%m-%Y')
@@ -289,6 +312,9 @@ def download_pdf():
                     url = url_ie.replace("07-September-2021",fullDate)
                 elif "13-September-" in url_ie:
                     url = url_ie.replace("13-September-",fullDate).replace("-2021","-")
+                elif "10-october-2021" in url_ie:
+                    url = url_ie.replace("10-october-2021",fullDate.lower())
+
                 else:
                     pass
 
