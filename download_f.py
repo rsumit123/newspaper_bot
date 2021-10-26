@@ -340,7 +340,7 @@ def download_pdf():
         
 
         
-        if file_size_ie >=2 and file_size_th>=2 and (file_size_ie+file_size_th<=25):
+        if file_size_ie >=0 and file_size_th>=2 and (file_size_ie+file_size_th<=25):
 
             print("sending from first all satisfied")
             print("sending email..."+"IE_Newspaper_"+tdate+".pdf"+","+"TH_Newspaper_"+tdate+".pdf")
